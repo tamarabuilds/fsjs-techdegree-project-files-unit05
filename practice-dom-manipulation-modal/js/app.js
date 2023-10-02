@@ -27,7 +27,55 @@ const container = document.querySelector('.countries');
 
 // Close the modal when the user presses the escape key
 
+container.addEventListener('click', (e)=> {
+  const countryCard = e.target.closest('.country')
+  if(!countryCard) return;
 
+  const name = countryCard.dataset.name;
+  const country = countries.find( 
+    (country) => country.name.common === name)
+
+  displayCountryModal(country);
+});
+
+function displayCountryModal(country){
+  const html = `
+    <h2>${country.name.common}</h2>
+    <div class="flag">
+      <img src="${country.flags.svg}" alt="" />
+    </div>
+    <div class="content">
+      <h3>Population:</h3>
+      <p>${country.population}</p>
+      <h3>Region:</h3>
+      <p>${country.region}</p>
+      <h3>Capital:</h3>
+      <p>${country.capital}</p>
+    </div>
+  `
+  modalContent.innerHTML = html;
+
+  overlay.classList.add('open')
+};
+
+function closeModal(){
+  overlay.classList.remove('open')
+}
+
+closeButton.addEventListener('click', ()=> closeModal());
+
+overlay.addEventListener('click', (e)=> {
+  const isModal = e.target.closest('.modal')
+  if(!isModal) closeModal();
+});
+
+document.addEventListener('keyup', (e)=> {
+  if (e.key = 'Escape') closeModal();
+});
+
+
+
+/*
 container.addEventListener('click', (e)=> {
   const clickedContainer = e.target.closest('.country');
   if (clickedContainer){
@@ -82,7 +130,7 @@ function closeModal() {
   overlay.classList.remove('open');
 }
 
-
+*/
 
 
 
