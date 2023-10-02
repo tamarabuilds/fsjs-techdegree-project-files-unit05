@@ -28,6 +28,63 @@ const container = document.querySelector('.countries');
 // Close the modal when the user presses the escape key
 
 
+container.addEventListener('click', (e)=> {
+  const clickedContainer = e.target.closest('.country');
+  if (clickedContainer){
+    // Set the name of the clicked country
+    const clickedName = clickedContainer.dataset.name;
+
+    // get the country object based on the clicked name
+    let clickedCountryObject = ""
+    countries.forEach( country => {
+      country.name.common === clickedName ?
+          clickedCountryObject = country : ''
+    });
+    console.log(clickedCountryObject);
+
+    // update modal content with clicked country data
+    modalContent.querySelector('h2').innerText = `${clickedCountryObject.name.common}`;
+    modalContent.querySelector('.flag img').src = `${clickedCountryObject.flags.svg}`;
+    const content = modalContent.querySelector('.content ')
+    content.innerHTML = `
+            <h3>Population:</h3>
+            <p>${clickedCountryObject.population}</p>
+            <h3>Region:</h3>
+            <p>${clickedCountryObject.region}</p>
+            <h3>Capital:</h3>
+            <p>${clickedCountryObject.capital}</p>
+    `
+    overlay.classList.add('open');
+  }
+
+});
+
+closeButton.addEventListener('click', ()=> closeModal());
+document.addEventListener('click', (e)=> {
+  // console.log(overlay.classList[1] === 'open')
+  if(overlay.classList[1] === 'open'){
+    // console.log(e.target)
+    if (e.target === document.querySelector('.overlay')){
+      closeModal();
+    }
+    
+  }
+});
+document.addEventListener('keyup', (e)=> {
+  if(overlay.classList[1] === 'open'){
+    if(e.code === 'Escape'){
+      closeModal();
+    }
+  }
+});
+
+function closeModal() {
+  overlay.classList.remove('open');
+}
+
+
+
+
 
 //========================
 //  FETCH DATA
